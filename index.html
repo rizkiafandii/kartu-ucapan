@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Kartu ucapan ulang tahun spesial.">
+  <title>Happy Birthday!</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Pacifico&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Ubah tanggal ini sesuai waktu kartu boleh dibuka (format: YYYY-MM-DDTHH:mm:ss+07:00). -->
+  <section class="cover" id="cover" aria-labelledby="cover-title">
+    <span class="balloon balloon--one" aria-hidden="true"></span>
+    <span class="balloon balloon--two" aria-hidden="true"></span>
+    <span class="balloon balloon--three" aria-hidden="true"></span>
+    <span class="balloon balloon--four" aria-hidden="true"></span>
+
+    <div class="cover__content">
+      <p class="eyebrow">a birthday surprise for</p>
+      <h1 id="cover-title">Dwi Anggi Pujawati</h1>
+      <p class="cover__lead">ada ucapan dari aku. tapi sabar dulu</p>
+
+      <div class="countdown" role="timer" aria-live="polite" aria-label="Hitung mundur menuju pembukaan kartu">
+        <div class="time-box"><span id="days">00</span><small>Hari</small></div>
+        <div class="time-box"><span id="hours">00</span><small>Jam</small></div>
+        <div class="time-box"><span id="minutes">00</span><small>Menit</small></div>
+        <div class="time-box"><span id="seconds">00</span><small>Detik</small></div>
+      </div>
+
+      <button class="unlock-button" id="unlockButton" type="button" disable>buka pada waktunya</button>
+      <p class="status" id="status" aria-live="polite">kartu masih terkunci sampai hitung mundur selesai.</p>
+    </div>
+  </section>
+
+  <main class="birthday-pages" id="birthdayCard" tabindex="-1">
+    <article class="card birthday-page is-active" aria-labelledby="birthday-title">
+      <span class="confetti" aria-hidden="true"></span>
+      <span class="confetti" aria-hidden="true"></span>
+      <span class="confetti" aria-hidden="true"></span>
+      <span class="confetti" aria-hidden="true"></span>
+      <span class="confetti" aria-hidden="true"></span>
+      <span class="confetti" aria-hidden="true"></span>
+
+      <p class="card__eyebrow">akhirnya terbuka!</p>
+      <h2 id="birthday-title">selamat ulang tahun yaa!</h2>
+      <p class="card__message mt-3">
+        semoga di umur yang baru ini kamu makin bahagia, makin sukses, makin sehat, dan tentunya makin cantik.
+        walaupun sekarang kita... ya gitulah.
+        aku tetap mau ngucapin kamu.
+        semoga apa yang kamu inginkan bisa tercapai, urusan kamu dilancarkan, dan semoga tahun ini lebih banyak hal baik yang datang ke kamu.
+        pokoknya jangan lupa bahagia.
+        dan jangan lupa... gajadi deh aowkowok.
+      </p>
+
+      <button class="next-button" type="button" data-next-page="hopeCard">Masih ada!</button>
+    </article>
+
+    <article class="card birthday-page" id="hopeCard" aria-labelledby="hope-title" hidden>
+      <span class="confetti" aria-hidden="true"></span>
+      <span class="confetti" aria-hidden="true"></span>
+      <span class="confetti" aria-hidden="true"></span>
+      <span class="confetti" aria-hidden="true"></span>
+      <span class="confetti" aria-hidden="true"></span>
+      <span class="confetti" aria-hidden="true"></span>
+
+      <p class="card__eyebrow">untukmu</p>
+      <h2 id="hope-title">harapan dan doa buat kamu</h2>
+      <p class="card__message">
+        di hari yang spesial ini doaku buat kamu adalah semoga kamu selalu sehat terus,
+        jangan sering begadang kayak aku. makin bahagia, semoga di umur baru ini lebih banyak ketawa daripada nangis.
+        ketemu banyak hal baik, orang baik, kesempatan baik, rezeki baik dan tentunya jajan yang enak wkwk.
+        intinya, aku berharap di umur yang baru ini jadi umur yang baik buat kamu!
+      </p>
+
+      <button class="next-button" type="button" data-next-page="finalCard">terakhir!</button>
+    </article>
+
+    <article class="card birthday-page card--final" id="finalCard" aria-labelledby="final-title" hidden>
+      <span class="confetti" aria-hidden="true"></span>
+      <span class="confetti" aria-hidden="true"></span>
+      <span class="confetti" aria-hidden="true"></span>
+      <span class="confetti" aria-hidden="true"></span>
+      <span class="confetti" aria-hidden="true"></span>
+      <span class="confetti" aria-hidden="true"></span>
+
+      <p class="card__eyebrow">satu lagi</p>
+      <h2 id="final-title">pesan terakhir</h2>
+      <p class="card__message mt-3">
+        sebenernya aku gatau mau nulis apa disini. jadi ya balik lagi, dihari ulang tahunmu ini,
+        aku cuma bisa berharap semoga kamu selalu baik baik aja, bahagia, dan ketemu banyak hal yang bikin kamu senyum terus!
+        kalo suatu hari nanti kita udah gabisa ngobrol, cerita, ketawa, atau bahkan becanda kayak dulu lagi gapapaa aman aja,
+        tapi kalo masih bisa alhamdulillah hirobbil alamin, yang penting hari ini kamu happy dulu.
+        karena ini kan hari ulang tahunmu, bukan hari untuk mikirin kita hehe. dan sekali lagi selamat ulang tahun Dwi Anggi Pujawati!
+      </p>
+
+      <div class="cake" aria-label="Ilustrasi kue ulang tahun" role="img">
+        <span class="flame flame--left"></span>
+        <span class="flame flame--right"></span>
+        <span class="number-candle number-candle--left">2</span>
+        <span class="number-candle number-candle--right">2</span>
+        <span class="cake__icing"></span>
+        <span class="cake__layer cake__layer--top"></span>
+        <span class="cake__layer cake__layer--bottom"></span>
+        <span class="cake__dot cake__dot--one"></span>
+        <span class="cake__dot cake__dot--two"></span>
+        <span class="cake__dot cake__dot--three"></span>
+        <span class="cake__plate"></span>
+      </div>
+
+      <p class="signature">dari <span>— Rizki Afandi</span></p>
+      <p class="cake-note">kue ulang tahunnya ini dulu ya, yang 3D masih gabisa aku hehe</p>
+    </article>
+  </main>
+
+  <audio id="birthdaySong" src="audio/audio.mp3" loop preload="metadata"></audio>
+  <button class="music-control is-paused" id="musicControl" type="button" aria-label="Lanjutkan lagu" aria-pressed="false" hidden>
+    <span class="music-disc" aria-hidden="true"></span>
+    <span class="music-pause" aria-hidden="true"></span>
+  </button>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+  <script>
+    // Ganti nilai ini dengan tanggal dan jam ulang tahun yang diinginkan.
+    const unlockDate = new Date('2026-09-02T00:00:00+07:00');
+
+    const cover = document.getElementById('cover');
+    const unlockButton = document.getElementById('unlockButton');
+    const status = document.getElementById('status');
+    const birthdayCard = document.getElementById('birthdayCard');
+    const birthdaySong = document.getElementById('birthdaySong');
+    const musicControl = document.getElementById('musicControl');
+    birthdaySong.volume = 0.5;
+    const units = {
+      days: document.getElementById('days'),
+      hours: document.getElementById('hours'),
+      minutes: document.getElementById('minutes'),
+      seconds: document.getElementById('seconds')
+    };
+    let timer;
+
+    function formatTime(value) {
+      return String(value).padStart(2, '0');
+    }
+
+    function showCard() {
+      cover.classList.add('is-hidden');
+      musicControl.hidden = false;
+      playMusic();
+      window.setTimeout(() => birthdayCard.focus({ preventScroll: true }), 300);
+    }
+
+    function updateMusicControl(isPlaying) {
+      musicControl.classList.toggle('is-playing', isPlaying);
+      musicControl.classList.toggle('is-paused', !isPlaying);
+      musicControl.setAttribute('aria-pressed', String(isPlaying));
+      musicControl.setAttribute('aria-label', isPlaying ? 'Jeda lagu' : 'Lanjutkan lagu');
+    }
+
+    function playMusic() {
+      birthdaySong.play().catch(() => updateMusicControl(false));
+    }
+
+    musicControl.addEventListener('click', () => {
+      if (birthdaySong.paused) {
+        playMusic();
+      } else {
+        birthdaySong.pause();
+      }
+    });
+
+    birthdaySong.addEventListener('play', () => updateMusicControl(true));
+    birthdaySong.addEventListener('pause', () => updateMusicControl(false));
+
+    function showNextPage(nextPageId) {
+      const currentPage = document.querySelector('.birthday-page.is-active');
+      const nextPage = document.getElementById(nextPageId);
+
+      if (!currentPage || !nextPage) return;
+
+      currentPage.hidden = true;
+      currentPage.classList.remove('is-active');
+      nextPage.hidden = false;
+      nextPage.classList.add('is-active');
+      birthdayCard.focus({ preventScroll: true });
+    }
+
+    document.querySelectorAll('[data-next-page]').forEach((button) => {
+      button.addEventListener('click', () => showNextPage(button.dataset.nextPage));
+    });
+
+    function unlockCard() {
+      clearInterval(timer);
+      unlockButton.disabled = false;
+      unlockButton.textContent = 'buka kartu ucapan';
+      status.textContent = 'selamat ulang tahun!. kartu sekarang bisa dibuka!';
+      unlockButton.addEventListener('click', showCard, { once: true });
+    }
+
+    function updateCountdown() {
+      const difference = unlockDate.getTime() - Date.now();
+
+      if (difference <= 0) {
+        Object.values(units).forEach((unit) => { unit.textContent = '00'; });
+        unlockCard();
+        return;
+      }
+
+      const totalSeconds = Math.floor(difference / 1000);
+      const days = Math.floor(totalSeconds / 86400);
+      const hours = Math.floor((totalSeconds % 86400) / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+
+      units.days.textContent = formatTime(days);
+      units.hours.textContent = formatTime(hours);
+      units.minutes.textContent = formatTime(minutes);
+      units.seconds.textContent = formatTime(seconds);
+    }
+
+    updateCountdown();
+    if (unlockDate.getTime() > Date.now()) {
+      timer = setInterval(updateCountdown, 1000);
+    }
+  </script>
+
+</body>
+</html>
