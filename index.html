@@ -13,6 +13,11 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div class="gift-opening" id="giftOpening" aria-hidden="true">
+    <div class="gift-box"><span class="gift-lid"></span><span class="gift-ribbon"></span><span class="gift-bow"></span></div>
+  </div>
+  <div class="butterfly-cursor" id="butterflyCursor" aria-hidden="true"><i></i><i></i></div>
+  <div class="celebration-layer" id="celebrationLayer" aria-hidden="true"></div>
   <!-- Ubah tanggal ini sesuai waktu kartu boleh dibuka (format: YYYY-MM-DDTHH:mm:ss+07:00). -->
   <section class="cover" id="cover" aria-labelledby="cover-title">
     <span class="balloon balloon--one" aria-hidden="true"></span>
@@ -32,7 +37,7 @@
         <div class="time-box"><span id="seconds">00</span><small>Detik</small></div>
       </div>
 
-      <button class="unlock-button" id="unlockButton" type="button" disable>buka pada waktunya</button>
+      <button class="unlock-button" id="unlockButton" type="button" disabled>buka pada waktunya</button>
       <p class="status" id="status" aria-live="polite">kartu masih terkunci sampai hitung mundur selesai.</p>
     </div>
   </section>
@@ -112,9 +117,18 @@
         <span class="cake__plate"></span>
       </div>
 
-      <p class="signature">dari <span>— Rizki Afandi</span></p>
-      <p class="cake-note">kue ulang tahunnya ini dulu ya, yang 3D masih gabisa aku hehe</p>
+      <div class="final-note">
+        <p class="signature">dari <span>— Rizki Afandi</span></p>
+        <p class="cake-note">kue ulang tahunnya ini dulu ya, yang 3D masih gabisa aku hehe</p>
+      </div>
+      <button class="next-button close-button" type="button" id="show3dCake">tutup</button>
     </article>
+
+    <section class="cake-3d-page" id="cake3dPage" hidden aria-label="Kue ulang tahun 3D">
+      <div class="cake-3d-copy"><span>tapi boong</span><strong>selamat ulang tahun!</strong></div>
+      <div class="cake-3d-stage" id="cake3dStage"></div>
+      <button class="blow-button" id="blowCandles" type="button">tiup lilin</button>
+    </section>
   </main>
 
   <audio id="birthdaySong" src="audio/audio.mp3" loop preload="metadata"></audio>
@@ -124,6 +138,7 @@
   </button>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js" integrity="sha384-qOkzR5Ke/XkQxuGVJ9hpFEpDlcoLtWwVYhnJf06cLIZa2vaIptSqaubivErzmD5O" crossorigin="anonymous"></script>
   <script>
     // Ganti nilai ini dengan tanggal dan jam ulang tahun yang diinginkan.
     const unlockDate = new Date('2026-09-02T00:00:00+07:00');
@@ -134,6 +149,9 @@
     const birthdayCard = document.getElementById('birthdayCard');
     const birthdaySong = document.getElementById('birthdaySong');
     const musicControl = document.getElementById('musicControl');
+    const giftOpening = document.getElementById('giftOpening');
+    const celebrationLayer = document.getElementById('celebrationLayer');
+    const butterflyCursor = document.getElementById('butterflyCursor');
     birthdaySong.volume = 0.5;
     const units = {
       days: document.getElementById('days'),
@@ -148,10 +166,15 @@
     }
 
     function showCard() {
-      cover.classList.add('is-hidden');
-      musicControl.hidden = false;
       playMusic();
-      window.setTimeout(() => birthdayCard.focus({ preventScroll: true }), 300);
+      giftOpening.classList.add('is-opening');
+      window.setTimeout(() => {
+        cover.classList.add('is-hidden');
+        giftOpening.classList.add('is-finished');
+        musicControl.hidden = false;
+        burst(innerWidth / 2, innerHeight / 2, 46);
+        birthdayCard.focus({ preventScroll: true });
+      }, 1150);
     }
 
     function updateMusicControl(isPlaying) {
@@ -221,6 +244,189 @@
       units.minutes.textContent = formatTime(minutes);
       units.seconds.textContent = formatTime(seconds);
     }
+
+    function burst(x, y, amount = 34) {
+      const colors = ['#ff719d', '#ffd35c', '#65d6bd', '#8f7ef2', '#ffffff'];
+      for (let i = 0; i < amount; i += 1) {
+        const particle = document.createElement('i');
+        const angle = Math.random() * Math.PI * 2;
+        const distance = 70 + Math.random() * 210;
+        particle.style.cssText = `--x:${x}px;--y:${y}px;--tx:${Math.cos(angle) * distance}px;--ty:${Math.sin(angle) * distance}px;--r:${Math.random() * 720}deg;--c:${colors[i % colors.length]};--d:${700 + Math.random() * 700}ms`;
+        celebrationLayer.appendChild(particle);
+        particle.addEventListener('animationend', () => particle.remove(), { once: true });
+      }
+    }
+
+    function flowerBurst(x, y, amount = 28) {
+      const colors = ['#ff7ca5', '#ffd865', '#76d9bd', '#a992ef'];
+      for (let i = 0; i < amount; i += 1) {
+        const petal = document.createElement('b');
+        const angle = Math.random() * Math.PI * 2;
+        const distance = 90 + Math.random() * 230;
+        petal.style.cssText = `--x:${x}px;--y:${y}px;--tx:${Math.cos(angle) * distance}px;--ty:${Math.sin(angle) * distance + 70}px;--r:${360 + Math.random() * 720}deg;--c:${colors[i % colors.length]};--d:${1000 + Math.random() * 900}ms`;
+        celebrationLayer.appendChild(petal);
+        petal.addEventListener('animationend', () => petal.remove(), { once: true });
+      }
+    }
+
+    let butterflyX = innerWidth / 2;
+    let butterflyY = innerHeight / 2;
+    addEventListener('pointermove', (event) => {
+      butterflyX += (event.clientX - butterflyX) * .55;
+      butterflyY += (event.clientY - butterflyY) * .55;
+      butterflyCursor.style.transform = `translate3d(${butterflyX}px,${butterflyY}px,0) rotate(${(event.clientX - butterflyX) * .12}deg)`;
+      butterflyCursor.classList.add('is-visible');
+    }, { passive: true });
+
+    let cakeSceneStarted = false;
+    function build3dCake() {
+      if (cakeSceneStarted) return true;
+      if (!window.THREE) return false;
+      try {
+      cakeSceneStarted = true;
+      const stage = document.getElementById('cake3dStage');
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(35, stage.clientWidth / stage.clientHeight, .1, 100);
+      camera.position.set(0, 4.25, 12.2);
+      camera.lookAt(0, .45, 0);
+      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+      renderer.setSize(stage.clientWidth, stage.clientHeight);
+      renderer.shadowMap.enabled = true;
+      stage.appendChild(renderer.domElement);
+
+      scene.add(new THREE.HemisphereLight(0xfff8e8, 0x8bcdb8, 2.2));
+      const key = new THREE.DirectionalLight(0xffffff, 2.8);
+      key.position.set(4, 7, 5); key.castShadow = true; scene.add(key);
+      const cake = new THREE.Group(); scene.add(cake);
+      const mat = (color, rough=.45, metal=.02) => new THREE.MeshStandardMaterial({ color, roughness:rough, metalness:metal });
+      function cylinder(radius, height, y, color) {
+        const mesh = new THREE.Mesh(new THREE.CylinderGeometry(radius, radius, height, 64), mat(color));
+        mesh.position.y = y; mesh.castShadow = mesh.receiveShadow = true; cake.add(mesh); return mesh;
+      }
+      cylinder(2.45,.28,-1.28,0xf1d47f);
+      cylinder(2.15,1.25,-.52,0x7edbc4);
+      cylinder(1.62,1.1,.64,0xff94b4);
+      cylinder(1.08,.92,1.63,0xffe982);
+      [0,1,2].forEach((level) => {
+        const radius=[2.16,1.63,1.09][level], y=[.06,1.18,2.07][level];
+        const icing=cylinder(radius+.02,.16,y,0xfffbef);
+        for(let i=0;i<12;i+=1){
+          const drop=new THREE.Mesh(new THREE.SphereGeometry(.13,20,16),mat(0xfffbef));
+          const a=i/12*Math.PI*2;drop.position.set(Math.cos(a)*radius,y-.12,Math.sin(a)*radius);drop.scale.y=1.5;cake.add(drop);
+        }
+      });
+      const flameMeshes=[];
+      const candleX = [-.36, .36];
+      function makeNumberTwo(x) {
+        const shape = new THREE.Shape();
+        shape.moveTo(-.24,.28);
+        shape.bezierCurveTo(-.22,.58,.02,.72,.26,.57);
+        shape.bezierCurveTo(.48,.43,.45,.16,.25,-.03);
+        shape.lineTo(-.17,-.42);
+        shape.lineTo(.43,-.42);
+        shape.lineTo(.43,-.60);
+        shape.lineTo(-.47,-.60);
+        shape.lineTo(-.47,-.43);
+        shape.lineTo(.08,.08);
+        shape.bezierCurveTo(.23,.22,.23,.35,.11,.42);
+        shape.bezierCurveTo(-.02,.50,-.13,.41,-.14,.27);
+        shape.closePath();
+        const geometry = new THREE.ExtrudeGeometry(shape,{depth:.14,bevelEnabled:true,bevelSegments:3,steps:1,bevelSize:.025,bevelThickness:.025});
+        geometry.center();
+        const two = new THREE.Mesh(geometry,mat(0xb084eb,.3));
+        two.scale.setScalar(.66);
+        two.position.set(x,2.68,-.07);two.castShadow=true;cake.add(two);
+        const stem = new THREE.Mesh(new THREE.CylinderGeometry(.065,.065,.22,20),mat(0xb084eb,.3));
+        stem.position.set(x,2.28,0);cake.add(stem);
+      }
+      candleX.forEach((x) => {
+        makeNumberTwo(x);
+        const flame=new THREE.Mesh(new THREE.SphereGeometry(.095,24,18),new THREE.MeshStandardMaterial({color:0xffbb45,emissive:0xff7417,emissiveIntensity:3}));flame.position.set(x-.025,3.18,0);flame.scale.y=1.65;cake.add(flame);flameMeshes.push(flame);
+      });
+      const flowerColors=[0xff6f9f,0xffd65c,0xffffff,0x9b80e8];
+      for(let i=0;i<28;i+=1){
+        const flower=new THREE.Mesh(new THREE.SphereGeometry(.13,16,12),mat(flowerColors[i%4]));
+        const a=i/28*Math.PI*2,r=i%2?2.12:1.61,y=i%2?-.18:.83;flower.position.set(Math.cos(a)*r,y,Math.sin(a)*r);cake.add(flower);
+      }
+      const floor=new THREE.Mesh(new THREE.CircleGeometry(4.1,64),new THREE.MeshStandardMaterial({color:0xffffff,transparent:true,opacity:.34,roughness:.8}));floor.rotation.x=-Math.PI/2;floor.position.y=-1.44;floor.receiveShadow=true;scene.add(floor);
+      let dragging=false,lastX=0,target=0;
+      stage.addEventListener('pointerdown',e=>{dragging=true;lastX=e.clientX;stage.setPointerCapture(e.pointerId)});
+      stage.addEventListener('pointermove',e=>{if(dragging){target+=(e.clientX-lastX)*.012;lastX=e.clientX}});
+      stage.addEventListener('pointerup',()=>dragging=false);
+      document.getElementById('blowCandles').addEventListener('click',()=>{
+        const button = document.getElementById('blowCandles');
+        button.disabled = true;
+        let shakeStart = performance.now();
+        function shakeFlames(now) {
+          const elapsed = now - shakeStart;
+          flameMeshes.forEach((flame, i) => {
+            flame.rotation.z = Math.sin(elapsed * .045 + i) * .55;
+            flame.scale.set(.78 + Math.sin(elapsed * .06) * .16, 1.55, .78);
+          });
+          if (elapsed < 850) requestAnimationFrame(shakeFlames);
+        }
+        requestAnimationFrame(shakeFlames);
+        window.setTimeout(() => {
+          flameMeshes.forEach((flame) => { flame.visible = false; });
+          const smokeMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff, transparent: true, opacity: .42, roughness: 1 });
+          const smokePuffs = [];
+          candleX.forEach((x) => {
+            for (let i = 0; i < 5; i += 1) {
+              const puff = new THREE.Mesh(new THREE.SphereGeometry(.12 + i * .035, 18, 14), smokeMaterial.clone());
+              puff.position.set(x - .025 + (Math.random() - .5) * .08, 3.09 + i * .11, (Math.random() - .5) * .08);
+              puff.userData = { drift: (Math.random() - .5) * .004, delay: i * 80 };
+              cake.add(puff); smokePuffs.push(puff);
+            }
+          });
+          const smokeStart = performance.now();
+          function animateSmoke(now) {
+            const elapsed = now - smokeStart;
+            smokePuffs.forEach((puff) => {
+              const age = Math.max(0, elapsed - puff.userData.delay);
+              puff.position.y += age > 0 ? .004 : 0;
+              puff.position.x += puff.userData.drift;
+              puff.material.opacity = Math.max(0, .42 - age / 2300);
+              const scale = 1 + age / 1600;
+              puff.scale.setScalar(scale);
+            });
+            if (elapsed < 1500) requestAnimationFrame(animateSmoke);
+            else smokePuffs.forEach((puff) => cake.remove(puff));
+          }
+          requestAnimationFrame(animateSmoke);
+          camera.userData.zoomTarget = 10.9;
+        }, 850);
+        window.setTimeout(() => {
+          const box=stage.getBoundingClientRect();
+          burst(box.left+box.width/2,box.top+box.height*.43,86);
+          flowerBurst(box.left+box.width/2,box.top+box.height*.43,34);
+        }, 1350);
+      },{once:true});
+      function resize(){camera.aspect=stage.clientWidth/stage.clientHeight;camera.updateProjectionMatrix();renderer.setSize(stage.clientWidth,stage.clientHeight)}
+      addEventListener('resize',resize);
+      function animate(t){
+        cake.rotation.y+=(target-cake.rotation.y)*.08;
+        if(!dragging)target+=.0025;
+        if (camera.userData.zoomTarget) camera.position.z += (camera.userData.zoomTarget - camera.position.z) * .035;
+        flameMeshes.forEach((f,i)=>{if(f.visible && !document.getElementById('blowCandles').disabled)f.scale.y=1.5+Math.sin(t*.012+i)*.18});
+        renderer.render(scene,camera);requestAnimationFrame(animate)
+      }requestAnimationFrame(animate);
+      return true;
+      } catch (error) {
+        cakeSceneStarted = false;
+        console.error('Kue 3D gagal dimuat.', error);
+        return false;
+      }
+    }
+
+    document.getElementById('show3dCake').addEventListener('click', () => {
+      if (!build3dCake()) return;
+      document.getElementById('finalCard').hidden = true;
+      const page = document.getElementById('cake3dPage');
+      page.hidden = false;
+      document.body.classList.add('showing-3d-cake');
+      burst(innerWidth / 2, innerHeight / 2, 48);
+    });
 
     updateCountdown();
     if (unlockDate.getTime() > Date.now()) {
