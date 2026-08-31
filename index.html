@@ -420,11 +420,16 @@
     }
 
     document.getElementById('show3dCake').addEventListener('click', () => {
-      if (!build3dCake()) return;
-      document.getElementById('finalCard').hidden = true;
+      const finalCard = document.getElementById('finalCard');
       const page = document.getElementById('cake3dPage');
       page.hidden = false;
       document.body.classList.add('showing-3d-cake');
+      if (!build3dCake()) {
+        page.hidden = true;
+        document.body.classList.remove('showing-3d-cake');
+        return;
+      }
+      finalCard.hidden = true;
       burst(innerWidth / 2, innerHeight / 2, 48);
     });
 
